@@ -1,0 +1,12 @@
+{
+  "commit": {
+    "commit": "650fec62136e778eb12acd6728e53198016c0632",
+    "author": "Scott Chamberlain <sckott@fastmail.com>",
+    "time": "2021-03-17 16:40:37",
+    "files": 2,
+    "merge": false,
+    "message": "use gh actions badge in readme\n"
+  },
+  "remote": "https://github.com/ropensci/phylocomr",
+  "pkg": "phylocomr"
+}
