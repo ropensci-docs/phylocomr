@@ -1,0 +1,12 @@
+{
+  "commit": {
+    "commit": "a1937fabaa4d1dfbff7efc11b67ca097f7e9ee75",
+    "author": "Luna Sare <sanchez.reyes.luna@gmail.com>",
+    "time": "2023-04-21 19:44:27",
+    "files": 2,
+    "merge": false,
+    "message": "fix typo\n"
+  },
+  "repo": "https://github.com/ropensci/phylocomr",
+  "pkg": "phylocomr"
+}
