@@ -1,0 +1,100 @@
+# bladj
+
+Bladj take a phylogeny and fixes the root node at a specified age, and
+fixes other nodes you might have age estimates for. It then sets all
+other branch lengths by placing the nodes evenly between dated nodes,
+and between dated nodes and terminals (beginning with the longest
+'chains').
+
+## Usage
+
+``` r
+ph_bladj(ages, phylo)
+```
+
+## Arguments
+
+- ages:
+
+  (data.frame/character) ages data.frame, or path to an ages file.
+  required. column names do not matter, and are discarded anyway. the
+  first column must be the node names, and the second column the node
+  ages. See Details.
+
+- phylo:
+
+  (character/phylo) One of: phylogeny as a newick string (will be
+  written to a temp file) - OR path to file with a newick string - OR a
+  an ape `phylo` object. required.
+
+## Value
+
+newick string with attributes for where ages and phylo files used are
+stored
+
+## Details
+
+See
+[phylocomr-inputs](https://docs.ropensci.org/phylocomr/reference/phylocomr-inputs.md)
+for expected input formats
+
+## Common Errors
+
+A few issues to be aware of:
+
+- the ages table must have a row for the root node with an age estimate.
+  bladj will not work without that. We attempt to check this but can
+  only check it if you pass in a phylo object; there's no easy way to
+  parse a newick string without requiring ape
+
+- bladj is case sensitive. internally we lowercase all tip and node
+  labels and taxon names in your ages file to avoid any case sensitivity
+  problems
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+ages_file <- system.file("examples/ages", package = "phylocomr")
+phylo_file <- system.file("examples/phylo_bladj", package = "phylocomr")
+
+# from data.frame
+ages_df <- data.frame(
+  a = c('malpighiales','eudicots','ericales_to_asterales','plantaginaceae',
+        'malvids', 'poales'),
+  b = c(81, 20, 56, 76, 47, 71)
+)
+phylo_str <- readLines(phylo_file)
+(res <- ph_bladj(ages = ages_df, phylo = phylo_str))
+if (requireNamespace("ape")) {
+  library(ape)
+  plot(read.tree(text = res))
+}
+
+# from files
+ages_file2 <- file.path(tempdir(), "ages")
+write.table(ages_df, file = ages_file2, row.names = FALSE,
+  col.names = FALSE, quote = FALSE)
+phylo_file2 <- tempfile()
+cat(phylo_str, file = phylo_file2, sep = '\n')
+(res <- ph_bladj(ages_file2, phylo_file2))
+if (requireNamespace("ape")) {
+  library(ape)
+  plot(read.tree(text = res))
+}
+
+# using a ape phylo phylogeny object
+x <- read.tree(text = phylo_str)
+if (requireNamespace("ape")) {
+  library(ape)
+  plot(x)
+}
+
+(res <- ph_bladj(ages_file2, x))
+if (requireNamespace("ape")) {
+  library(ape)
+  tree <- read.tree(text = res)
+  plot(tree)
+}
+} # }
+```
